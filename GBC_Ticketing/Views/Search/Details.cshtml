@@ -1,0 +1,82 @@
+@model GBC_Ticketing.Models.Event
+
+@{
+  ViewData["Title"] = "Event Details";
+}
+
+<div class="container mt-4">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <div class="card event-detail-card">
+        @if (!string.IsNullOrEmpty(Model.ImagePath))
+        {
+          <img src="@Model.ImagePath" 
+               class="card-img-top event-detail-image" 
+               alt="@Model.Title" 
+               onerror="this.src='/images/no-image.svg';">
+        }
+        
+        <div class="card-header">
+          <h1 class="card-title mb-0">@Html.DisplayFor(model => model.Title)</h1>
+        </div>
+        
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="detail-item mb-3">
+                <h5 class="detail-label">Category</h5>
+                <span class="badge bg-primary fs-6">@(Model.Category?.Name ?? "No Category")</span>
+              </div>
+              
+              <div class="detail-item mb-3">
+                <h5 class="detail-label">Start Date & Time</h5>
+                <p class="detail-value">@Model.StartAt.ToString("yyyy-MM-dd HH:mm")</p>
+              </div>
+              
+              <div class="detail-item mb-3">
+                <h5 class="detail-label">Price</h5>
+                <p class="detail-value price-highlight">$@Html.DisplayFor(model => model.Price)</p>
+              </div>
+              
+              <div class="detail-item mb-3">
+                <h5 class="detail-label">Tickets</h5>
+                <p class="detail-value tickets-highlight">@Model.RemainingTickets / @Model.AvailableTickets Available</p>
+              </div>
+              
+              @if (!string.IsNullOrEmpty(Model.Address))
+              {
+                <div class="detail-item mb-3">
+                  <h5 class="detail-label">Address</h5>
+                  <p class="detail-value">
+                    <i class="fas fa-map-marker-alt me-2"></i>@Model.Address
+                  </p>
+                </div>
+              }
+            </div>
+            
+            <div class="col-md-6">
+              @if (!string.IsNullOrEmpty(Model.Description))
+              {
+                <div class="detail-item">
+                  <h5 class="detail-label">Description</h5>
+                  <p class="detail-description">@Model.Description</p>
+                </div>
+              }
+            </div>
+          </div>
+        </div>
+        
+        <div class="card-footer">
+          <div class="d-flex gap-2">
+            <a href="javascript:history.back()" class="btn btn-secondary ms-auto">
+              <i class="fas fa-arrow-left me-1"></i>Back
+            </a>
+            <a asp-action="Create" asp-controller="Purchases" asp-route-eventId="@Model.EventId" class="btn btn-primary">
+              Purchase Tickets
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,44 @@
+@model GBC_Ticketing.Models.Purchase
+
+<div class="d-flex flex-column justify-content-center align-items-center"
+     style="min-height: 100vh; padding: 3rem 0;"
+     data-confirmation-card>
+
+  <!-- Confirmation Card -->
+  <div class="card bg-dark border-0 shadow-lg p-4"
+       style="max-width: 640px; width: 100%; border-radius: 16px; background: rgba(25,25,35,0.9); backdrop-filter: blur(8px);">
+
+    <div class="card-body text-center px-5 py-4">
+
+      <!-- Title -->
+      <h3 class="text-light fw-bold mb-3">
+        Purchase Confirmed!
+      </h3>
+      <p class="text-secondary mb-4">
+        Your ticket purchase was successful. Here’s your confirmation details:
+      </p>
+
+      <!-- Ticket Details -->
+      <div class="text-start text-light small border rounded-4 p-4 mb-4 bg-transparent"
+           style="line-height: 1.8;">
+        @if (ViewBag.Event != null)
+        {
+          <p><strong class="text-primary">Event:</strong> @ViewBag.Event.Title</p>
+          <p><strong class="text-primary">Event Date:</strong> @ViewBag.Event.StartAt.ToString("MMMM dd, yyyy - hh:mm tt")</p>
+        }
+        <p><strong class="text-primary">Guest Name:</strong> @Model.GuestName</p>
+        <p><strong class="text-primary">Guest Email:</strong> @Model.GuestEmail</p>
+        <p><strong class="text-primary">Quantity:</strong> @Model.Quantity</p>
+        <p><strong class="text-primary">Total Cost:</strong> $@Model.TotalCost.ToString("0.00")</p>
+        <p><strong class="text-primary">Purchased At:</strong> @Model.PurchasedAt.ToLocalTime().ToString("MMMM d, yyyy h:mm tt")</p>
+      </div>
+
+      <!-- Back Button -->
+      <a href="/" class="btn btn-primary px-4 py-2 fw-semibold shadow-sm"
+         style="border-radius: 10px;">
+        ← Back to Event Search
+      </a>
+
+    </div>
+  </div>
+</div>

@@ -1,0 +1,519 @@
+/* Dark Theme Color Palette */
+:root {
+  --primary-color: #5366f1; /* Indigo */
+  --secondary-color: #5b5cf6; /* Purple */
+  --accent-color: #06b6d4; /* Cyan */
+  --success-color: #10b981; /* Emerald */
+  --warning-color: #f59e0b; /* Amber */
+  --danger-color: #ef4444; /* Red */
+  --dark-bg: #212529; /* Bootstrap dark gray */
+  --card-bg: #232831; /* Slate 800 */
+  --footer-bg: #242830; /* Slightly lighter dark gray */
+  --border-color: #334155; /* Slate 700 */
+}
+
+html {
+  font-size: 14px;
+  height: 100%;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: var(--dark-bg) !important;
+  font-family: "Raleway", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    sans-serif;
+  font-weight: 400;
+  line-height: 1.6;
+  letter-spacing: 0.05em;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+/* Main content wrapper should take up available space */
+main {
+  flex: 1 0 auto;
+}
+
+/* Remove navbar border */
+.navbar {
+  border: none !important;
+}
+
+/* Custom Button Styles */
+.btn-primary {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+
+.btn-primary:hover {
+  background-color: #4f46e5;
+  border-color: #4f46e5;
+}
+
+.btn-success {
+  background-color: var(--success-color);
+  border-color: var(--success-color);
+}
+
+.btn-success:hover {
+  background-color: #059669;
+  border-color: #059669;
+}
+
+.btn-warning {
+  background-color: var(--warning-color);
+  border-color: var(--warning-color);
+}
+
+.btn-danger {
+  background-color: var(--danger-color);
+  border-color: var(--danger-color);
+}
+
+.btn-secondary {
+  background-color: #4a5568 !important;
+  border-color: #4a5568 !important;
+  color: #ffffff !important;
+}
+
+.btn-secondary:hover {
+  background-color: #2d3748 !important;
+  border-color: #2d3748 !important;
+  color: #ffffff !important;
+}
+
+/* Card Enhancements */
+.card {
+  background-color: #212529 !important;
+  border: none !important;
+  transition: transform 0.15s ease-out;
+  will-change: transform;
+}
+
+.card-body {
+  padding: 2rem !important;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(99, 102, 241, 0.15) !important;
+}
+
+.card-header {
+  background: linear-gradient(
+    135deg,
+    var(--primary-color),
+    var(--secondary-color)
+  ) !important;
+  border-bottom-color: var(--border-color) !important;
+  padding: 1.5rem 2rem !important;
+}
+
+/* Override for event cards specifically */
+.event-card .card-header {
+  background: white !important;
+  background-color: white !important;
+  background-image: none !important;
+}
+
+.card-footer {
+  background-color: rgba(30, 41, 59, 0.5) !important;
+  border-top-color: var(--border-color) !important;
+}
+
+/* Badge Styles */
+.badge {
+  background: linear-gradient(
+    135deg,
+    var(--accent-color),
+    var(--primary-color)
+  ) !important;
+}
+
+/* Navbar Brand Enhancement */
+.navbar-brand {
+  margin-left: 0.5rem;
+  font-family: "Raleway", sans-serif;
+  font-weight: 700;
+  font-size: 1.5rem;
+  letter-spacing: 0.05em;
+  background: linear-gradient(
+    135deg,
+    var(--primary-color),
+    var(--accent-color)
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Navigation Links */
+.nav-link {
+  letter-spacing: 0.1em;
+  font-size: 1.2rem;
+  font-weight: 500;
+  padding: 0.5rem 1.3rem !important;
+}
+
+/* Focus States */
+.btn:focus,
+.btn:active:focus,
+.btn-link.nav-link:focus,
+.form-control:focus,
+.form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem rgba(99, 102, 241, 0.25),
+    0 0 0 0.25rem rgba(99, 102, 241, 0.15);
+}
+
+/* Form Enhancements */
+.form-control {
+  background-color: var(--card-bg) !important;
+  border-color: var(--border-color) !important;
+  color: #e2e8f0 !important;
+}
+
+.form-control:focus {
+  background-color: var(--card-bg) !important;
+  border-color: var(--primary-color) !important;
+  box-shadow: 0 0 0 0.2rem rgba(99, 102, 241, 0.25);
+}
+
+.form-select {
+  background-color: var(--card-bg) !important;
+  border-color: var(--border-color) !important;
+  color: #e2e8f0 !important;
+}
+
+.form-label {
+  color: #cbd5e1 !important;
+  font-family: "Raleway", sans-serif;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+/* Text Colors */
+.text-success {
+  color: var(--success-color) !important;
+}
+
+.text-primary {
+  color: var(--primary-color) !important;
+}
+
+/* Footer - Sticky to bottom */
+.footer {
+  background-color: var(--footer-bg) !important;
+  border: none !important;
+  border-top: none !important;
+  margin-top: 40px;
+  padding: 1rem 0;
+  line-height: 1.2 !important;
+  flex-shrink: 0;
+}
+
+.footer p {
+  margin-bottom: 0.25rem !important;
+  line-height: 1.2 !important;
+}
+
+.footer .small div {
+  margin-bottom: 0.15rem !important;
+  line-height: 1.1 !important;
+}
+
+/* Empty State Styling */
+.text-center .fa-5x {
+  color: var(--border-color);
+}
+
+/* Floating Form Styles */
+.form-floating > .form-control-plaintext::placeholder,
+.form-floating > .form-control::placeholder {
+  color: var(--bs-secondary-color);
+  text-align: end;
+}
+
+.form-floating > .form-control-plaintext:focus::placeholder,
+.form-floating > .form-control:focus::placeholder {
+  text-align: start;
+}
+
+/* Typography Enhancements */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: "Raleway", sans-serif;
+  font-weight: 600;
+}
+
+.btn {
+  font-family: "Raleway", sans-serif;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+
+.card-title {
+  font-family: "Raleway", sans-serif;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+/* Animation for page transitions - REMOVED for performance optimization */
+/* Heavy animation on every page load causes performance issues */
+
+/* Custom Create Event Button Style */
+.btn-create-event {
+  background: linear-gradient(135deg, #6366f1, #8b5cf6) !important;
+  border: none !important;
+  color: white !important;
+  font-weight: 600;
+  transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
+  box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+}
+
+.btn-create-event:hover {
+  background: linear-gradient(135deg, #4f46e5, #7c3aed) !important;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4);
+  color: white !important;
+}
+
+/* Event Card Styles - Clean & Simple Design */
+.event-card {
+  background-color: white !important;
+  border: none !important;
+  border-radius: 16px !important;
+  overflow: hidden;
+  transition: transform 0.15s ease-out;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  will-change: transform;
+}
+
+.event-card .card-img-top {
+  width: 100% !important;
+  height: 240px !important;
+  object-fit: cover !important;
+  object-position: center !important;
+}
+
+.event-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15) !important;
+}
+
+.event-card .card-header {
+  background: white !important;
+  background-color: white !important;
+  background-image: none !important;
+  border-bottom: none !important;
+  padding: 1.5rem 1.5rem 0.5rem 1.5rem !important;
+}
+
+.event-card .card-title {
+  color: #1f2937 !important;
+  font-weight: 600;
+  font-size: 1.25rem;
+  margin-bottom: 0;
+}
+
+.event-card .card-body {
+  background-color: white !important;
+  padding: 1rem 1.5rem !important;
+  color: #6b7280;
+}
+
+.event-card .card-body strong {
+  color: #374151;
+  font-weight: 500;
+}
+
+.event-card .price-text {
+  color: var(--primary-color) !important;
+  font-weight: 600;
+}
+
+.event-card .tickets-text {
+  color: var(--primary-color) !important;
+  font-weight: 600;
+}
+
+.event-card .card-footer {
+  background-color: white !important;
+  border-top: 1px solid #f3f4f6 !important;
+  padding: 1rem 1.5rem 1.5rem 1.5rem !important;
+}
+
+/* Simple Button Styles for Event Cards */
+.event-card .btn-simple {
+  background-color: #f8f9fa;
+  border: none !important;
+  color: #6b7280;
+  font-weight: 500;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  transition: background-color 0.15s ease-out, color 0.15s ease-out;
+}
+
+.event-card .btn-simple:hover {
+  background-color: #e5e7eb;
+  color: #374151;
+  transform: none;
+}
+
+.event-card .btn-simple i {
+  opacity: 0.7;
+}
+
+/* Description text truncation */
+.event-description {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  line-height: 1.4;
+  margin-bottom: 0.5rem !important;
+}
+
+.view-more-link {
+  color: var(--primary-color) !important;
+  text-decoration: none;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.view-more-link:hover {
+  color: #4f46e5 !important;
+  text-decoration: underline;
+}
+
+/* Custom text size classes */
+.text-xs {
+  font-size: 0.75rem !important;
+}
+
+.text-xxs {
+  font-size: 0.625rem !important;
+}
+
+/* Event Detail Page Styles */
+.event-detail-card {
+  background-color: white !important;
+  border: none !important;
+  border-radius: 0 0 16px 16px !important;
+  overflow: visible !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+}
+
+.event-detail-image {
+  width: 100% !important;
+  height: 400px !important;
+  object-fit: cover !important;
+  object-position: center !important;
+  border-radius: 0 !important;
+  margin-bottom: 0 !important;
+}
+
+.event-detail-card .card-header {
+  background: white !important;
+  background-color: white !important;
+  background-image: none !important;
+  border-bottom: 1px solid #f3f4f6 !important;
+  padding: 2rem 2rem 1rem 2rem !important;
+}
+
+.event-detail-card .card-title {
+  color: #1f2937 !important;
+  font-weight: 700;
+  font-size: 2rem;
+  margin-bottom: 0;
+}
+
+.event-detail-card .card-body {
+  background-color: white !important;
+  padding: 2rem !important;
+  color: #6b7280;
+}
+
+.detail-item {
+  margin-bottom: 1.5rem;
+}
+
+.detail-label {
+  color: #374151 !important;
+  font-weight: 600;
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.detail-value {
+  color: #6b7280;
+  font-size: 1.1rem;
+  margin-bottom: 0;
+}
+
+.detail-description {
+  color: #6b7280;
+  font-size: 1rem;
+  line-height: 1.6;
+  margin-bottom: 0;
+}
+
+.price-highlight {
+  color: var(--primary-color) !important;
+  font-weight: 600;
+  font-size: 1.25rem !important;
+}
+
+.tickets-highlight {
+  color: var(--primary-color) !important;
+  font-weight: 600;
+  font-size: 1.25rem !important;
+}
+
+.event-detail-card .card-footer {
+  background-color: white !important;
+  border-top: 1px solid #f3f4f6 !important;
+  padding: 1.5rem 2rem 2rem 2rem !important;
+}
+
+/* Light gray buttons for detail page */
+.btn-light-gray {
+  background-color: #f8f9fa !important;
+  border: 1px solid #e9ecef !important;
+  color: #6c757d !important;
+  font-weight: 500;
+  transition: background-color 0.15s ease-out, color 0.15s ease-out;
+}
+
+.btn-light-gray:hover {
+  background-color: #e9ecef !important;
+  border-color: #dee2e6 !important;
+  color: #495057 !important;
+  transform: none;
+}
+
+/* Clickable Card Styles */
+.clickable-card {
+  cursor: pointer;
+  transition: transform 0.15s ease-out, box-shadow 0.15s ease-out;
+}
+
+.clickable-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.18) !important;
+}
+
+a.text-decoration-none .clickable-card .card-title,
+a.text-decoration-none .clickable-card .card-body,
+a.text-decoration-none .clickable-card .card-footer {
+  color: inherit;
+}

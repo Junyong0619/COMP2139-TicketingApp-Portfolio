@@ -1,0 +1,139 @@
+@model GBC_Ticketing.Areas.Admin.ViewModels.AdminDashboardViewModel
+
+@{
+  ViewData["Title"] = "Admin Dashboard";
+}
+
+<section class="py-4">
+  <div class="container">
+    <div class="d-flex align-items-center justify-content-between mb-4">
+      <div>
+        <p class="text-uppercase text-secondary fw-semibold mb-1">Overview</p>
+        <h1 class="mb-0">Admin Dashboard</h1>
+      </div>
+      <a class="btn btn-outline-light" href="@Url.Action("Create", "Events", new { area = "" })">
+        <i class="fa fa-plus-circle me-2"></i>Create Event
+      </a>
+    </div>
+
+    <div class="row g-3 mb-4">
+      <div class="col-md-3">
+        <div class="card bg-dark border-light h-100">
+          <div class="card-body">
+            <p class="text-secondary text-uppercase small mb-1">Total Events</p>
+            <h2 class="mb-0">@Model.TotalEvents</h2>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card bg-dark border-light h-100">
+          <div class="card-body">
+            <p class="text-secondary text-uppercase small mb-1">Upcoming</p>
+            <h2 class="mb-0">@Model.UpcomingEvents</h2>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card bg-dark border-light h-100">
+          <div class="card-body">
+            <p class="text-secondary text-uppercase small mb-1">Purchases</p>
+            <h2 class="mb-0">@Model.TotalPurchases</h2>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card bg-dark border-light h-100">
+          <div class="card-body">
+            <p class="text-secondary text-uppercase small mb-1">Revenue</p>
+            <h2 class="mb-0">@Model.TotalRevenue.ToString("C")</h2>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row g-4">
+      <div class="col-lg-6">
+        <div class="card bg-dark border-light h-100">
+          <div class="card-header border-0 d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">Top Events</h5>
+            <a class="text-decoration-none" href="@Url.Action("Index", "Events", new { area = "" })">View all</a>
+          </div>
+          <div class="card-body p-0">
+            <table class="table table-dark table-hover mb-0">
+              <thead>
+                <tr>
+                  <th scope="col">Title</th>
+                  <th scope="col" class="text-end">Tickets</th>
+                  <th scope="col" class="text-end">Revenue</th>
+                </tr>
+              </thead>
+              <tbody>
+              @if (Model.TopEvents.Any())
+              {
+                foreach (var item in Model.TopEvents)
+                {
+                  <tr>
+                    <td>@item.Title</td>
+                    <td class="text-end">@item.TicketsSold</td>
+                    <td class="text-end">@item.Revenue.ToString("C")</td>
+                  </tr>
+                }
+              }
+              else
+              {
+                <tr>
+                  <td colspan="3" class="text-center text-secondary py-4">No purchases recorded yet.</td>
+                </tr>
+              }
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="card bg-dark border-light h-100">
+          <div class="card-header border-0 d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">Recent Purchases</h5>
+            <a class="text-decoration-none" href="@Url.Action("Index", "Purchases", new { area = "" })">Manage</a>
+          </div>
+          <div class="card-body p-0">
+            <table class="table table-dark table-hover mb-0">
+              <thead>
+                <tr>
+                  <th scope="col">Guest</th>
+                  <th scope="col">Event</th>
+                  <th scope="col" class="text-end">Amount</th>
+                </tr>
+              </thead>
+              <tbody>
+              @if (Model.RecentPurchases.Any())
+              {
+                foreach (var purchase in Model.RecentPurchases)
+                {
+                  <tr>
+                    <td>
+                      <div class="fw-semibold">@purchase.GuestName</div>
+                      <small class="text-secondary">@purchase.GuestEmail</small>
+                    </td>
+                    <td>
+                      <div>@purchase.EventTitle</div>
+                      <small class="text-secondary">@purchase.PurchasedAt.ToLocalTime().ToString("MMM dd, yyyy HH:mm")</small>
+                    </td>
+                    <td class="text-end">@purchase.TotalCost.ToString("C")</td>
+                  </tr>
+                }
+              }
+              else
+              {
+                <tr>
+                  <td colspan="3" class="text-center text-secondary py-4">No purchase activity yet.</td>
+                </tr>
+              }
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

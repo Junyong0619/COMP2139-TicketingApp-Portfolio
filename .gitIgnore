@@ -1,0 +1,16 @@
+# Build
+bin/
+obj/
+publish/
+
+# Rider
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Others
+_Docs/
+appsettings.Development.json
+*.log

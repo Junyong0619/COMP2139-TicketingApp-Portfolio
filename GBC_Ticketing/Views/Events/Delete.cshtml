@@ -1,0 +1,15 @@
+@model GBC_Ticketing.Models.Event
+
+@{
+  ViewData["Title"] = "Delete Event";
+}
+
+<h3>Delete Event</h3>
+
+<p>Are you sure you want to delete "@Model.Title"?</p>
+
+<form asp-action="Delete" method="post">
+  <input type="hidden" asp-for="EventId" />
+  <button type="submit" class="btn btn-danger">Delete Event</button>
+  <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+</form>

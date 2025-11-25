@@ -1,0 +1,141 @@
+@model GBC_Ticketing.Areas.Attendee.ViewModels.AttendeeDashboardViewModel
+
+@{
+  ViewData["Title"] = "Attendee Portal";
+  var qrImagePath = Url.Content("~/images/qr.png");
+}
+
+<style>
+  .rating-btn {
+    border-color: rgba(255, 255, 255, 0.4);
+    color: #fff;
+    background: transparent;
+    transition: background-color 0.2s ease, color 0.2s ease;
+    cursor: pointer;
+  }
+
+  .rating-btn.filled {
+    background: #ffc107;
+    border-color: #ffc107;
+    color: #1a1a1a;
+  }
+
+  .rating-btn:not(.filled):hover {
+    background: rgba(255, 255, 255, 0.15);
+  }
+
+  .rating-btn.filled:hover {
+    background: #ffdb4d;
+    border-color: #ffdb4d;
+    color: #111;
+  }
+</style>
+
+<section class="py-4">
+  <div class="container">
+    <div id="ajaxTokens" class="d-none">
+      @Html.AntiForgeryToken()
+    </div>
+    <div class="d-flex align-items-center gap-3 mb-4">
+      <img src="@(!string.IsNullOrWhiteSpace(Model.ProfilePictureUrl) ? Model.ProfilePictureUrl : Url.Content("~/images/profile-placeholder.jpg"))"
+           alt="Profile" class="rounded-circle" width="64" height="64" />
+      <div>
+        <p class="text-uppercase text-secondary fw-semibold mb-1">My Tickets</p>
+        <h1 class="mb-0">@Model.AttendeeName</h1>
+      </div>
+    </div>
+
+    <ul class="nav nav-pills mb-3" id="ticketTabs" role="tablist">
+      <li class="nav-item" role="presentation">
+        <button class="nav-link active" id="upcoming-tab" data-bs-toggle="pill" data-bs-target="#upcoming" type="button" role="tab">Upcoming Events</button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="history-tab" data-bs-toggle="pill" data-bs-target="#history" type="button" role="tab">Purchase History</button>
+      </li>
+    </ul>
+
+    <div class="tab-content" id="ticketTabsContent">
+      <div class="tab-pane fade show active" id="upcoming" role="tabpanel" aria-labelledby="upcoming-tab">
+        @if (Model.UpcomingTickets.Any())
+        {
+          <div class="row g-3">
+            @foreach (var ticket in Model.UpcomingTickets)
+            {
+              <div class="col-lg-6">
+                <div class="card bg-dark border-light h-100">
+                  <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-start gap-3">
+                      <div>
+                        <p class="text-secondary text-uppercase small mb-1">@ticket.CategoryName</p>
+                        <h4 class="mb-1">@ticket.EventTitle</h4>
+                        <p class="mb-2">@ticket.Address</p>
+                      </div>
+                      <div class="text-center">
+                        <img src="@qrImagePath"
+                             alt="QR code for @ticket.EventTitle"
+                             class="border border-light rounded"
+                             style="width:80px;height:80px;object-fit:cover;" />
+                      </div>
+                    </div>
+                    <div class="d-flex justify-content-between text-secondary small">
+                      <span>@ticket.StartAt.ToLocalTime().ToString("MMM dd, yyyy HH:mm")</span>
+                      <span>@ticket.Quantity ticket(s)</span>
+                    </div>
+                  </div>
+                  <div class="card-footer d-flex gap-2">
+                    <a class="btn btn-outline-light btn-sm" asp-area="" asp-controller="Search" asp-action="Details" asp-route-id="@ticket.EventId">Details</a>
+                    <button type="button" class="btn btn-outline-primary btn-sm">Download PDF Ticket</button>
+                  </div>
+                </div>
+              </div>
+            }
+          </div>
+        }
+        else
+        {
+          <div class="alert alert-secondary">No upcoming events yet. Discover events from the homepage!</div>
+        }
+      </div>
+
+      <div class="tab-pane fade" id="history" role="tabpanel" aria-labelledby="history-tab" data-rate-url="@Url.Action("Rate", "Purchases")">
+        @if (Model.PurchaseHistory.Any())
+        {
+          <div class="list-group">
+            @foreach (var ticket in Model.PurchaseHistory)
+            {
+              <div class="list-group-item bg-dark border-light mb-2">
+                <div class="d-flex justify-content-between">
+                  <div>
+                    <h5 class="mb-1">@ticket.EventTitle</h5>
+                    <p class="mb-0 text-secondary">@ticket.StartAt.ToLocalTime().ToString("MMM dd, yyyy") · @ticket.Quantity ticket(s) · @ticket.TotalCost.ToString("C")</p>
+                  </div>
+                  <div>
+                    @if (ticket.Rating.HasValue)
+                    {
+                      <span class="badge bg-success">Rated @ticket.Rating★</span>
+                    }
+                  </div>
+                </div>
+                <div class="mt-3 d-flex align-items-center gap-2">
+                  <div class="btn-group btn-group-sm" role="group" aria-label="Rate this event (UI only)">
+                    @for (var star = 1; star <= 5; star++)
+                    {
+                      var isFilled = ticket.Rating.HasValue && star <= ticket.Rating.Value;
+                      var buttonClass = isFilled ? "rating-btn filled" : "rating-btn";
+                      <button type="button" class="btn btn-sm @buttonClass">@star★</button>
+                    }
+                  </div>
+                </div>
+              </div>
+            }
+          </div>
+        }
+        else
+        {
+          <div class="alert alert-secondary">No purchases yet. Start exploring!</div>
+        }
+      </div>
+    </div>
+  </div>
+</section>
+

@@ -1,0 +1,55 @@
+@model GBC_Ticketing.Models.Purchase
+
+@{
+    ViewData["Title"] = "Edit Purchase";
+}
+
+<h2>Edit Purchase</h2>
+
+<form asp-action="Edit">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    
+    
+    <input type="hidden" asp-for="PurchaseId" />
+
+    <div class="form-group">
+        <label asp-for="GuestName" class="control-label"></label>
+        <input asp-for="GuestName" class="form-control" />
+        <span asp-validation-for="GuestName" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="GuestEmail" class="control-label"></label>
+        <input asp-for="GuestEmail" class="form-control" />
+        <span asp-validation-for="GuestEmail" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="EventId" class="control-label"></label>
+        <input asp-for="EventId" class="form-control" readonly />
+        <span asp-validation-for="EventId" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Quantity" class="control-label"></label>
+        <input asp-for="Quantity" class="form-control" />
+        <span asp-validation-for="Quantity" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="TotalCost" class="control-label"></label>
+        <input asp-for="TotalCost" class="form-control" readonly />
+        <span asp-validation-for="TotalCost" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="PurchasedAt" class="control-label"></label>
+        <input asp-for="PurchasedAt" class="form-control" readonly />
+        <span asp-validation-for="PurchasedAt" class="text-danger"></span>
+    </div>
+
+    <div class="form-group mt-3">
+        <button type="submit" class="btn btn-primary">Save</button>
+        <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+    </div>
+</form>

@@ -1,31 +1,61 @@
-# COMP2139-TicketingApp-Portfolio
-Documentation-only version for portfolio. Full group project was submitted privately for grading.
-# Ticketing App (COMP2139 · Team Project)
+# GBC Ticketing System - Documentation
 
-This is a documentation-only portfolio version of our COMP2139 group project at George Brown College.
-The full project code is not included to respect academic integrity and team ownership.
+## Project Overview
 
-## ⚠️ Academic Integrity Notice
-- This repository does NOT contain the original source code.
-- A **private** version of the full project was submitted to the instructor for grading.
-- Only screenshots, descriptions, and diagrams are included.
-- This repository is for **portfolio and learning purposes only**.
+This is a group assignment project for COMP2139 - GBC Ticketing System.
 
-## Overview
-Our team built a basic ticket management system using ASP.NET MVC and Entity Framework.
+## Group1 Team Members
 
-The system includes:
-- Event management (Create/Read/Update/Delete)
-- Category assignment
-- Ticket purchase flow
-- Basic validation and database relationships
+- **Joosung Ahn (101539659)**
+- **Kiana Sepasian (101475855)**
+- **Junyong Choi (101539862)**
 
-## My Role
-I participated in the team development process and assisted in implementing parts of the CRUD logic,
-validation, and project structure under team collaboration.
+## Team Collaboration Guidelines
 
-## Technologies
-- ASP.NET MVC
-- C#
-- Entity Framework
-- SQL Server
+### Project Structure
+
+```
+GBC_Ticketing/
+├── Controllers/     # MVC Controllers
+├── Models/         # Data models and entities
+├── Views/          # Razor views and UI components
+├── Data/           # Database context and migrations
+├── Services/       # Business logic services
+└── wwwroot/        # Static files (CSS, JS, images)
+```
+
+## Getting Started
+
+1. Clone the repository
+2. Open project in Rider (NuGet packages will restore automatically)
+3. Create a PostgreSQL database named `GbcTicketingDB`
+4. Copy `appsettings.json` to `appsettings.Development.json` and update with your database settings:
+   ```json
+   {
+     "ConnectionStrings": {
+       "DefaultConnection": "Host=localhost;Port=5432;Database=GbcTicketingDB;Username=postgres;Password=your_password"
+     }
+   }
+   ```
+   (appsettings.Development.json is gitignored, so each team member can have their own settings)
+5. Set up the database (First time setup):
+
+   ```bash
+   # Build the project first
+   dotnet build
+
+   # Create initial migration (only needed once)
+   dotnet ef migrations add InitialCreate
+
+   # Apply migrations to create database
+   dotnet ef database update
+   ```
+
+6. Run the application in Rider
+
+### Database Migration Commands (Reference)
+
+- **Create a new migration**: `dotnet ef migrations add <MigrationName>`
+- **Apply migrations to database**: `dotnet ef database update`
+- **Remove last migration**: `dotnet ef migrations remove`
+- **View migration history**: `dotnet ef migrations list`

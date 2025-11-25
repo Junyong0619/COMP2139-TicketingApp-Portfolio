@@ -1,0 +1,45 @@
+@model IEnumerable<GBC_Ticketing.Models.Purchase>
+
+<p>
+    <a class="btn btn-primary" asp-controller="Purchases" asp-action="Create" asp-route-eventId="1">
+        Create New Purchase
+    </a>
+</p>
+
+<h2>All Purchases</h2>
+
+<table class="table">
+    <thead>
+    <tr>
+        <th>Guest Name</th>
+        <th>Email</th>
+        <th>Event Id</th>
+        <th>Quantity</th>
+        <th>Total Cost</th>
+        <th>Purchased At</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var p in Model)
+    {
+        <tr>
+            <td>@p.GuestName</td>
+            <td>@p.GuestEmail</td>
+            <td>@p.EventId</td>
+            <td>@p.Quantity</td>
+            <td>@p.TotalCost</td>
+            <td>@p.PurchasedAt</td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@p.PurchaseId" class="btn btn-warning btn-sm">
+                    Edit
+                </a>
+                <a asp-action="Delete" asp-route-id="@p.PurchaseId" class="btn btn-danger btn-sm">
+                    Delete
+                </a>
+                
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>

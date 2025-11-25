@@ -1,0 +1,84 @@
+@model IEnumerable<GBC_Ticketing.Models.Event>
+
+@{
+  ViewData["Title"] = "Manage Events";
+}
+
+<div class="container mt-4">
+  <div class="row">
+    <div class="col-12">
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="text-white">
+          Manage Events
+        </h2>
+        <a asp-action="Create" class="btn btn-primary">
+          <i class="fas fa-plus me-1"></i>Create New Event
+        </a>
+      </div>
+
+      @if (Model.Any())
+      {
+        <div class="table-responsive">
+          <table class="table table-striped table-hover">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Title</th>
+                <th>Category</th>
+                <th>Date</th>
+                <th>Location</th>
+                <th>Price</th>
+                <th>Available</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              @foreach (var item in Model)
+              {
+                <tr>
+                  <td>@Html.DisplayFor(modelItem => item.EventId)</td>
+                  <td>@Html.DisplayFor(modelItem => item.Title)</td>
+                  <td>
+                    <span class="badge bg-secondary">@Html.DisplayFor(modelItem => item.Category!.Name)</span>
+                  </td>
+                  <td>@item.StartAt.ToString("yyyy-MM-dd HH:mm")</td>
+                  <td>@item.Address</td>
+                  <td>$@Html.DisplayFor(modelItem => item.Price)</td>
+                  <td class="text-nowrap @(item.RemainingTickets < 5 ? "text-danger fw-bold" : "")">
+                    @item.RemainingTickets / @item.AvailableTickets
+                  </td>
+                  <td>
+                    <div class="btn-group" role="group">
+                      <a asp-controller="Search" asp-action="Details" asp-route-id="@item.EventId" class="btn btn-simple btn-sm" title="Details">
+                        <i class="fas fa-eye"></i>
+                      </a>
+                      <a asp-controller="Events" asp-action="Edit" asp-route-id="@item.EventId" class="btn btn-simple btn-sm" title="Edit">
+                        <i class="fas fa-edit"></i>
+                      </a>
+                      <a asp-controller="Events" asp-action="Delete" asp-route-id="@item.EventId" class="btn btn-simple btn-sm" title="Delete">
+                        <i class="fas fa-trash"></i>
+                      </a>
+                    </div>
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      }
+      else
+      {
+        <div class="text-center py-5">
+          <div class="mb-4">
+            <i class="fas fa-calendar-times fa-5x text-muted"></i>
+          </div>
+          <h4 class="text-muted">No events found</h4>
+          <p class="text-muted">Create your first event to get started!</p>
+          <a asp-action="Create" class="btn btn-primary btn-lg">
+            <i class="fas fa-plus me-2"></i>Create New Event
+          </a>
+        </div>
+      }
+    </div>
+  </div>
+</div>

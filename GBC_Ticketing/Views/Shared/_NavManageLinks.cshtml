@@ -1,0 +1,30 @@
+@using Microsoft.AspNetCore.Identity
+@using GBC_Ticketing.Models
+
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+@if (SignInManager.IsSignedIn(User))
+{
+    var currentUser = await UserManager.GetUserAsync(User);
+    if (currentUser != null)
+    {
+        var isOrganizer = await UserManager.IsInRoleAsync(currentUser, "Organizer");
+        var isAdmin = await UserManager.IsInRoleAsync(currentUser, "Admin");
+        var isAttendee = await UserManager.IsInRoleAsync(currentUser, "Attendee");
+
+        if (isOrganizer)
+        {
+            <li class="nav-item">
+                <a class="nav-link" asp-controller="Events" asp-action="Index">Manage Events</a>
+            </li>
+        }
+
+        if (isAttendee || (!isOrganizer && !isAdmin))
+        {
+            <li class="nav-item">
+                <a class="nav-link" asp-area="Attendee" asp-controller="Home" asp-action="Index">My Purchases</a>
+            </li>
+        }
+    }
+}

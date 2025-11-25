@@ -1,0 +1,106 @@
+@model GBC_Ticketing.Models.Event
+
+@{
+  ViewData["Title"] = "Create Event";
+}
+
+<div class="container mt-4">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card shadow">
+        <div class="card-header bg-success text-white">
+          <h3 class="mb-0">
+            <i class="fas fa-plus-circle me-2"></i>Create New Event
+          </h3>
+        </div>
+        <div class="card-body">
+          <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+            
+            <div class="row">
+              <div class="col-md-12 mb-3">
+                <label asp-for="Title" class="form-label fw-bold">Event Title</label>
+                <input asp-for="Title" class="form-control" placeholder="Enter event title" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-12 mb-3">
+                <label asp-for="Description" class="form-label fw-bold">Description</label>
+                <textarea asp-for="Description" class="form-control" rows="4" placeholder="Enter event description (optional)"></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label asp-for="CategoryId" class="form-label fw-bold">Category</label>
+                <select asp-for="CategoryId" class="form-select" asp-items="ViewBag.CategoryId">
+                  <option value="">-- Select Category --</option>
+                </select>
+                <span asp-validation-for="CategoryId" class="text-danger"></span>
+              </div>
+              <div class="col-md-6 mb-3">
+                <label asp-for="StartAt" class="form-label fw-bold">Start Date & Time</label>
+                <input asp-for="StartAt" class="form-control" type="datetime-local" />
+                <span asp-validation-for="StartAt" class="text-danger"></span>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label asp-for="Price" class="form-label fw-bold">Price</label>
+                <div class="input-group">
+                  <span class="input-group-text">$</span>
+                  <input asp-for="Price" class="form-control" placeholder="0.00" min="0" step="0.01" />
+                </div>
+                <span asp-validation-for="Price" class="text-danger"></span>
+              </div>
+              <div class="col-md-6 mb-3">
+                <label asp-for="AvailableTickets" class="form-label fw-bold">Available Tickets</label>
+                <input asp-for="AvailableTickets" class="form-control" placeholder="0" min="0" />
+                <span asp-validation-for="AvailableTickets" class="text-danger"></span>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-12 mb-3">
+                <label asp-for="Address" class="form-label fw-bold">Event Address</label>
+                <input asp-for="Address" class="form-control" placeholder="Enter event address" required />
+                <span asp-validation-for="Address" class="text-danger"></span>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-12 mb-3">
+                <label asp-for="ImagePath" class="form-label fw-bold">Event Image URL</label>
+                <input asp-for="ImagePath" class="form-control" placeholder="Enter image URL (optional)" type="url" />
+                <span asp-validation-for="ImagePath" class="text-danger"></span>
+                
+              </div>
+            </div>
+
+            <div class="row mt-4">
+              <div class="col-12">
+                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                  <a asp-action="Index" class="btn btn-dark me-md-2">
+                    <i class="fas fa-arrow-left me-1"></i>Back to List
+                  </a>
+                  <button type="submit" class="btn btn-create-event">
+                    Create Event
+                  </button>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+@section Scripts {
+  @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+  
+}

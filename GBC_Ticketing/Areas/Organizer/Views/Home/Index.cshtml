@@ -1,0 +1,178 @@
+@using System.Text.Json
+@model GBC_Ticketing.Areas.Organizer.ViewModels.OrganizerDashboardViewModel
+
+@{
+  ViewData["Title"] = "Organizer Dashboard";
+  var jsonOptions = new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase };
+  var categoryData = JsonSerializer.Serialize(Model.CategoryRevenue, jsonOptions);
+  var monthlyData = JsonSerializer.Serialize(Model.MonthlyRevenue, jsonOptions);
+}
+
+<section class="py-4">
+  <div class="container">
+    <div class="d-flex align-items-center justify-content-between mb-4">
+      <div>
+        <p class="text-uppercase text-secondary fw-semibold mb-1">Welcome back</p>
+        <h1 class="mb-0">@Model.OrganizerName</h1>
+      </div>
+      <a class="btn btn-outline-light" href="@Url.Action("Create", "Events", new { area = "" })">
+        <i class="fa fa-plus-circle me-2"></i>New Event
+      </a>
+    </div>
+
+    <div class="row g-3 mb-4">
+      <div class="col-md-3">
+        <div class="card bg-dark border-light h-100">
+          <div class="card-body">
+            <p class="text-secondary text-uppercase small mb-1">Total Events</p>
+            <h2 class="mb-0">@Model.TotalEvents</h2>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card bg-dark border-light h-100">
+          <div class="card-body">
+            <p class="text-secondary text-uppercase small mb-1">Upcoming</p>
+            <h2 class="mb-0">@Model.UpcomingEvents</h2>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card bg-dark border-light h-100">
+          <div class="card-body">
+            <p class="text-secondary text-uppercase small mb-1">Tickets Sold</p>
+            <h2 class="mb-0">@Model.TotalTicketsSold</h2>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card bg-dark border-light h-100">
+          <div class="card-body">
+            <p class="text-secondary text-uppercase small mb-1">Revenue</p>
+            <h2 class="mb-0">@Model.TotalRevenue.ToString("C")</h2>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row g-4 mb-4">
+      <div class="col-lg-6">
+        <div class="card bg-dark border-light h-100">
+          <div class="card-header border-0 d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">Revenue by Category</h5>
+          </div>
+          <div class="card-body">
+            <canvas id="categoryChart" height="250"></canvas>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="card bg-dark border-light h-100">
+          <div class="card-header border-0 d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">Monthly Revenue</h5>
+          </div>
+          <div class="card-body">
+            <canvas id="monthlyChart" height="250"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card bg-dark border-light">
+      <div class="card-header border-0 d-flex justify-content-between align-items-center">
+        <h5 class="mb-0">My Events</h5>
+        <a class="text-decoration-none" href="@Url.Action("Index", "Events", new { area = "" })">Manage all</a>
+      </div>
+      <div class="card-body p-0">
+        <table class="table table-dark table-hover mb-0">
+          <thead>
+            <tr>
+              <th scope="col">Title</th>
+              <th scope="col">Category</th>
+              <th scope="col">Date</th>
+              <th scope="col" class="text-end">Tickets</th>
+              <th scope="col" class="text-end">Revenue</th>
+              <th scope="col" class="text-end">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+          @if (Model.Events.Any())
+          {
+            foreach (var evt in Model.Events)
+            {
+              <tr>
+                <td>@evt.Title</td>
+                <td>@evt.CategoryName</td>
+                <td>@evt.StartAt.ToLocalTime().ToString("MMM dd, yyyy HH:mm")</td>
+                <td class="text-end">@evt.TicketsSold / @evt.TicketsAvailable</td>
+                <td class="text-end">@evt.Revenue.ToString("C")</td>
+                <td class="text-end">
+                  <a class="btn btn-sm btn-outline-light" href="@Url.Action("Edit", "Events", new { area = "", id = evt.EventId })">Edit</a>
+                </td>
+              </tr>
+            }
+          }
+          else
+          {
+            <tr>
+              <td colspan="6" class="text-center text-secondary py-4">No events yet. Start by creating one!</td>
+            </tr>
+          }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+@section Scripts {
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    const categoryData = @Html.Raw(categoryData);
+    const monthlyData = @Html.Raw(monthlyData);
+
+    const pieCtx = document.getElementById('categoryChart');
+    if (pieCtx) {
+      new Chart(pieCtx, {
+        type: 'doughnut',
+        data: {
+          labels: categoryData.labels,
+          datasets: [{
+            data: categoryData.values,
+            backgroundColor: ['#8E44AD', '#2980B9', '#27AE60', '#F1C40F', '#E67E22', '#C0392B']
+          }]
+        },
+        options: {
+          plugins: {
+            legend: { position: 'bottom' }
+          }
+        }
+      });
+    }
+
+    const monthlyCtx = document.getElementById('monthlyChart');
+    if (monthlyCtx) {
+      new Chart(monthlyCtx, {
+        type: 'bar',
+        data: {
+          labels: monthlyData.labels,
+          datasets: [{
+            label: 'Revenue',
+            data: monthlyData.values,
+            backgroundColor: '#27AE60'
+          }]
+        },
+        options: {
+          plugins: {
+            legend: { display: false }
+          },
+          scales: {
+            y: {
+              beginAtZero: true
+            }
+          }
+        }
+      });
+    }
+  </script>
+}

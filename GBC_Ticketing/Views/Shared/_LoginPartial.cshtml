@@ -1,0 +1,61 @@
+@using Microsoft.AspNetCore.Identity
+@using GBC_Ticketing.Models
+
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+@if (SignInManager.IsSignedIn(User))
+{
+    var currentUser = await UserManager.GetUserAsync(User);
+    var roleLinks = new List<(string Role, string Label, string Url)>
+    {
+        ("Admin", "Dashboard", Url.Content("~/Dashboard")),
+        ("Organizer", "Dashboard", Url.Action("Index", "Home", new { area = "Organizer" }) ?? Url.Content("~/")),
+        ("Attendee", "My Portal", Url.Action("Index", "Home", new { area = "Attendee" }) ?? Url.Content("~/"))
+    };
+
+    var profileImage = !string.IsNullOrWhiteSpace(currentUser?.ProfilePictureUrl)
+        ? currentUser!.ProfilePictureUrl
+        : Url.Content("~/images/profile-placeholder.jpg");
+
+    <ul class="navbar-nav align-items-center gap-2">
+        <li class="nav-item">
+            <a class="nav-link d-flex align-items-center gap-2 p-0"
+               asp-area="Identity"
+               asp-page="/Account/Manage/Index"
+               title="Profile">
+                <img src="@profileImage"
+                     alt="Profile picture"
+                     width="32"
+                     height="32"
+                     class="rounded-circle border border-secondary" />
+                <span class="badge bg-secondary">@currentUser?.FullName</span>
+            </a>
+        </li>
+        @foreach (var (role, label, linkUrl) in roleLinks)
+        {
+            if (await UserManager.IsInRoleAsync(currentUser!, role))
+            {
+                <li class="nav-item">
+                    <a class="nav-link text-light" href="@linkUrl">@label</a>
+                </li>
+            }
+        }
+        <li class="nav-item">
+            <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Search", new { area = "" })">
+                <button id="logout" type="submit" class="nav-link btn btn-link text-light border-0">Logout</button>
+            </form>
+        </li>
+    </ul>
+}
+else
+{
+    <ul class="navbar-nav">
+        <li class="nav-item">
+            <a class="nav-link text-light" id="register" asp-area="Identity" asp-page="/Account/Register">Register</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-light" id="login" asp-area="Identity" asp-page="/Account/Login">Login</a>
+        </li>
+    </ul>
+}

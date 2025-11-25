@@ -1,0 +1,230 @@
+@model IEnumerable<GBC_Ticketing.Models.Event>
+
+@{
+  ViewData["Title"] = "Search Events";
+}
+
+<div class="container mt-4">
+  <div class="row">
+    <div class="col-12">
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="text-white">
+          Search Events
+        </h2>
+      </div>
+
+      <!-- Search and Filter Section -->
+      <div class="mb-5">
+        <form asp-action="Index" method="get" class="row g-3">
+          <!-- Search Input -->
+          <div class="col-md-6">
+            <label for="searchString" class="form-label text-white">Search</label>
+            <div class="input-group">
+              <span class="input-group-text">
+                <i class="fas fa-search"></i>
+              </span>
+              <input type="text" 
+                      class="form-control" 
+                      id="searchString" 
+                      name="searchString" 
+                      value="@ViewData["CurrentSearch"]" 
+                      placeholder="Search by title or description..."
+                      data-live-search-url="@Url.Action("Live", "Search")">
+            </div>
+          </div>
+
+          <!-- Category Filter -->
+          <div class="col-md-3">
+            <label for="categoryId" class="form-label text-white">Category</label>
+            <select class="form-select" id="categoryId" name="categoryId">
+              <option value="">All Categories</option>
+              @if (ViewData["Categories"] is SelectList categories)
+              {
+                @foreach (var category in categories)
+                {
+                  @if (category.Value == ViewData["CurrentCategory"]?.ToString())
+                  {
+                    <option value="@category.Value" selected>@category.Text</option>
+                  }
+                  else
+                  {
+                    <option value="@category.Value">@category.Text</option>
+                  }
+                }
+              }
+            </select>
+          </div>
+
+          <!-- Availability Filter -->
+          <div class="col-md-3">
+            <label for="availabilityFilter" class="form-label text-white">Availability</label>
+            <select class="form-select" id="availabilityFilter" name="availabilityFilter">
+              <option value="">All Events</option>
+              @if (ViewData["CurrentAvailability"]?.ToString() == "available")
+              {
+                <option value="available" selected>Available</option>
+              }
+              else
+              {
+                <option value="available">Available</option>
+              }
+              @if (ViewData["CurrentAvailability"]?.ToString() == "soldout")
+              {
+                <option value="soldout" selected>Sold Out</option>
+              }
+              else
+              {
+                <option value="soldout">Sold Out</option>
+              }
+            </select>
+          </div>
+
+          <!-- Start Date -->
+          <div class="col-md-3">
+            <label for="startDate" class="form-label text-white">From</label>
+            <input type="date" 
+                    class="form-control" 
+                    id="startDate" 
+                    name="startDate" 
+                    value="@ViewData["CurrentStartDate"]">
+          </div>
+
+          <!-- End Date -->
+          <div class="col-md-3">
+            <label for="endDate" class="form-label text-white">To</label>
+            <input type="date" 
+                    class="form-control" 
+                    id="endDate" 
+                    name="endDate" 
+                    value="@ViewData["CurrentEndDate"]">
+          </div>
+
+          <!-- Sort By -->
+          <div class="col-md-3">
+            <label for="sortBy" class="form-label text-white">Sort By</label>
+            <select class="form-select" id="sortBy" name="sortBy">
+              @{
+                var currentSort = ViewData["CurrentSort"]?.ToString();
+              }
+              @if (currentSort == "date" || string.IsNullOrEmpty(currentSort))
+              {
+                <option value="date" selected>Date (Earliest First)</option>
+              }
+              else
+              {
+                <option value="date">Date (Earliest First)</option>
+              }
+              @if (currentSort == "date_desc")
+              {
+                <option value="date_desc" selected>Date (Latest First)</option>
+              }
+              else
+              {
+                <option value="date_desc">Date (Latest First)</option>
+              }
+              @if (currentSort == "title")
+              {
+                <option value="title" selected>Title (A-Z)</option>
+              }
+              else
+              {
+                <option value="title">Title (A-Z)</option>
+              }
+              @if (currentSort == "title_desc")
+              {
+                <option value="title_desc" selected>Title (Z-A)</option>
+              }
+              else
+              {
+                <option value="title_desc">Title (Z-A)</option>
+              }
+              @if (currentSort == "price")
+              {
+                <option value="price" selected>Price (Low to High)</option>
+              }
+              else
+              {
+                <option value="price">Price (Low to High)</option>
+              }
+              @if (currentSort == "price_desc")
+              {
+                <option value="price_desc" selected>Price (High to Low)</option>
+              }
+              else
+              {
+                <option value="price_desc">Price (High to Low)</option>
+              }
+            </select>
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="col-md-3 d-flex align-items-end">
+            <div class="btn-group w-100" role="group">
+              <button type="submit" class="btn btn-primary">
+                <i class="fas fa-filter me-1"></i>Apply
+              </button>
+              <a asp-action="Index" class="btn btn-outline-secondary">
+                <i class="fas fa-times me-1"></i>Clear
+              </a>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <!-- Results Summary -->
+      @{
+        var hasFilters = !string.IsNullOrEmpty(ViewData["CurrentSearch"]?.ToString()) || 
+                        ViewData["CurrentCategory"] != null || 
+                        !string.IsNullOrEmpty(ViewData["CurrentStartDate"]?.ToString()) ||
+                        !string.IsNullOrEmpty(ViewData["CurrentEndDate"]?.ToString()) ||
+                        !string.IsNullOrEmpty(ViewData["CurrentAvailability"]?.ToString());
+        var eventCount = Model.Count();
+      }
+      
+      @if (hasFilters)
+      {
+        <div class="mb-4">
+          <div class="d-flex align-items-center gap-2 flex-wrap">
+            <div>
+              <strong>@eventCount</strong> event@(eventCount != 1 ? "s" : "") found
+              @if (!string.IsNullOrEmpty(ViewData["CurrentSearch"]?.ToString()))
+              {
+                <span> matching "<strong>@ViewData["CurrentSearch"]</strong>"</span>
+              }
+              @if (ViewData["CurrentCategory"] != null && ViewData["Categories"] is SelectList categoryList)
+              {
+                var selectedCategory = categoryList.FirstOrDefault(c => c.Value == ViewData["CurrentCategory"]?.ToString());
+                if (selectedCategory?.Text != null)
+                {
+                  <span> in category "<strong>@selectedCategory.Text</strong>"</span>
+                }
+              }
+              @if (!string.IsNullOrEmpty(ViewData["CurrentStartDate"]?.ToString()) || !string.IsNullOrEmpty(ViewData["CurrentEndDate"]?.ToString()))
+              {
+                <span> from <strong>@(ViewData["CurrentStartDate"] ?? "any date")</strong> to <strong>@(ViewData["CurrentEndDate"] ?? "any date")</strong></span>
+              }
+              @if (!string.IsNullOrEmpty(ViewData["CurrentAvailability"]?.ToString()))
+              {
+                var availText = ViewData["CurrentAvailability"]?.ToString();
+                <span> showing <strong>@(availText == "available" ? "available" : "sold out")</strong> events only</span>
+              }
+            </div>
+            <a asp-action="Index" class="btn btn-sm btn-outline-gray">
+              <i class="fas fa-times me-1"></i>Clear All Filters
+            </a>
+          </div>
+        </div>
+      }
+
+      <div id="liveSearchStatus" class="text-secondary small mb-3 d-none"></div>
+      <div id="liveSearchSpinner" class="text-center text-secondary d-none mb-4">
+        <div class="spinner-border" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+      </div>
+      <div id="searchResults">
+        @await Html.PartialAsync("_SearchResults", Model)
+      </div>
+    </div>
+  </div>
+</div>
